@@ -9,7 +9,7 @@
         "init_std": 0.02, 
         "proj_init_std": 0.01,
         "args": {
-            "n_token": 893,
+            "n_token": 884,
             "n_layer": 2,
             "d_model": 384,
             "n_head": 8,
@@ -28,7 +28,7 @@
     "data_loader": {
         "type": "SeqCodeDataLoader",
         "args": {
-            "data_dir": "./data/textcode/biobert_pubmed",
+            "data_dir": "~/mimic_taper",
             "batch_size": 32,
             "shuffle": true,
             "validation_split": 0.10,

@@ -52,17 +52,17 @@ class TextCodePre(BaseModel):
         self.transformer.load_state_dict(state_dict)
         self.transformer.eval()
 
-        state_dict = torch.load(text_summarizer_state_path)
-        summ_config = state_dict['config']
-        state_dict = state_dict['state_dict']
+        # state_dict = torch.load(text_summarizer_state_path)
+        # summ_config = state_dict['config']
+        # state_dict = state_dict['state_dict']
+        #
+        # summ_args = summ_config['model']['args']
+        #
+        # self.summarizer = GRUAE(**summ_args)
+        # self.summarizer.load_state_dict(state_dict)
 
-        summ_args = summ_config['model']['args']
-
-        self.summarizer = GRUAE(**summ_args)
-        self.summarizer.load_state_dict(state_dict)
-
-
-        self.patient_representation_size = int(self.text) * self.summarizer.hidden_size + self.transformer.d_embed * int(self.codes) + self.demographics_size
+        self.patient_representation_size = self.transformer.d_embed * int(self.codes) + self.demographics_size
+        # self.patient_representation_size = int(self.text) * self.summarizer.hidden_size + self.transformer.d_embed * int(self.codes) + self.demographics_size
         self.predictor = nn.Sequential(
                     nn.Dropout(p=dropout),
                     nn.Linear(self.patient_representation_size, self.patient_representation_size// div_factor),
@@ -74,8 +74,8 @@ class TextCodePre(BaseModel):
 
         x_codes = x_codes.to(device)
         x_cl = x_cl.to(device)
-        x_text = x_text.to(device)
-        x_tl = x_tl.to(device)
+        # x_text = x_text.to(device)
+        # x_tl = x_tl.to(device)
         demo = demo.to(device)
         b_is = b_is.to(device)
         batch_size = b_is.shape[0]

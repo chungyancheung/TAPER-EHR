@@ -1,5 +1,5 @@
 import numpy as np
-import nni
+# import nni
 import torch
 from torchvision.utils import make_grid
 from base import BaseTrainer

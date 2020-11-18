@@ -277,34 +277,34 @@ def main():
 
                 admit_data['timedelta'] = t
 
-                text_discharge = r['TEXT_DISCHARGE']
-                text_rest = r['TEXT_REST']
+                # text_discharge = r['TEXT_DISCHARGE']
+                # text_rest = r['TEXT_REST']
+                #
+                # ttokd = tokenizer.tokenize(text_discharge)
+                # ttokd = tokenizer.convert_tokens_to_ids(ttokd)
+                # ttokr = tokenizer.tokenize(text_rest)
+                # ttokr = tokenizer.convert_tokens_to_ids(ttokr)
+                #
+                # admit_data['text_discharge_raw'] = text_discharge
+                # admit_data['text_rest_raw'] = text_rest
+                #
+                # admit_data['text_discharge_len'] = len(ttokd)
+                # admit_data['text_rest_len'] = len(ttokr)
+                #
+                # admit_data['text_discharge_token'] = ttokd
+                # admit_data['text_rest_token'] = ttokr
+                #
+                # if len(temp_data) == 0:
+                #     if (args.embed_text):
+                #         ttokd = embed_text(ttokd, device, model, args.max_bert_seq_len, max_seq_len_text_d)
+                #         ttokd = ttokd.cpu().numpy()
+                #         ttokr = embed_text(ttokr, device, model, args.max_bert_seq_len, max_seq_len_text_r)
+                #         ttokr = ttokr.cpu().numpy()
+                # else:
+                #     ttok = temp_data[pid][i]['text_embedding']
 
-                ttokd = tokenizer.tokenize(text_discharge)
-                ttokd = tokenizer.convert_tokens_to_ids(ttokd)
-                ttokr = tokenizer.tokenize(text_rest)
-                ttokr = tokenizer.convert_tokens_to_ids(ttokr)
-
-                admit_data['text_discharge_raw'] = text_discharge
-                admit_data['text_rest_raw'] = text_rest
-
-                admit_data['text_discharge_len'] = len(ttokd)
-                admit_data['text_rest_len'] = len(ttokr)
-
-                admit_data['text_discharge_token'] = ttokd
-                admit_data['text_rest_token'] = ttokr
-
-                if len(temp_data) == 0:
-                    if (args.embed_text):
-                        ttokd = embed_text(ttokd, device, model, args.max_bert_seq_len, max_seq_len_text_d)
-                        ttokd = ttokd.cpu().numpy()
-                        ttokr = embed_text(ttokr, device, model, args.max_bert_seq_len, max_seq_len_text_r)
-                        ttokr = ttokr.cpu().numpy()
-                else:
-                    ttok = temp_data[pid][i]['text_embedding']
-
-                admit_data['text_embedding_discharge'] = ttokd
-                admit_data['text_embedding_rest'] = ttokr
+                # admit_data['text_embedding_discharge'] = ttokd
+                # admit_data['text_embedding_rest'] = ttokr
 
                 admit_data['los'] = r['LOS']
                 admit_data['readmission'] = r['readmission_label']
@@ -334,8 +334,8 @@ def main():
     data_info = {}
     num_icd9_codes, num_proc_codes, num_med_codes = 0, 0, 0
     data_info['num_patients'] = len(pids)
-    data_info['max_seq_len_text_d'] = max_seq_len_text_d
-    data_info['max_seq_len_text_r'] = max_seq_len_text_r
+    # data_info['max_seq_len_text_d'] = max_seq_len_text_d
+    # data_info['max_seq_len_text_r'] = max_seq_len_text_r
 
     data_info['num_icd9_codes'] = 0
     data_info['num_proc_codes'] = 0

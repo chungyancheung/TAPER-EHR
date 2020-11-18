@@ -7,7 +7,7 @@ import torch
 from utils.util import ensure_dir
 from utils.visualization import WriterTensorboardX
 
-import nni
+# import nni
 
 class BaseTrainer:
     """
@@ -97,8 +97,8 @@ class BaseTrainer:
             try:
                 temp_log = dict(log)
                 temp_log["loss"] = temp_log["loss"].item()
-                nni_log = {**{"default":temp_log["val_"+list(log.keys())[2]]}, **temp_log}
-                nni.report_final_result(nni_log)
+                # nni_log = {**{"default":temp_log["val_"+list(log.keys())[2]]}, **temp_log}
+                # nni.report_final_result(nni_log)
             except:
                 pass
 

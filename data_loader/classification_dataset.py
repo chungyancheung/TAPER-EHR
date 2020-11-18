@@ -33,7 +33,7 @@ class ClassificationDataset(data.Dataset):
         self.data_info = self.data['info']
         self.data = self.data['data']
 
-        self.text_dim = self._get_text_dim(self.data)
+        # self.text_dim = self._get_text_dim(self.data)
         self.demographics_shape = self.data_info['demographics_shape']
 
         self.diag_vocab = pickle.load(open(os.path.join(data_path, 'diag_vocab.pkl'), 'rb'))
@@ -126,8 +126,8 @@ class ClassificationDataset(data.Dataset):
         for k in keys:
             v = self.data[k]
             (x_codes, x_cl, x_text, x_tl, demo, y) = self.preprocess([k, 0])
-            if torch.sum(x_text):
-                indices.append([k, 0])
+            # if torch.sum(x_text):
+            #     indices.append([k, 0])
             if (len(y.size()) == 0) or (len(demo.size()) == 0):
                 import pdb; pdb.set_trace()
             for j in range(len(v)):
@@ -169,7 +169,7 @@ class ClassificationDataset(data.Dataset):
         n = idx[1]
         x_codes = torch.zeros((self.num_codes, self.max_len), dtype=torch.float)
         demo = torch.Tensor(seq[n]['demographics'])
-        x_text = torch.zeros(self.text_dim)
+        # x_text = torch.zeros(self.text_dim)
         for i in range(n):
             if(i + 1) == len(seq):
                continue
@@ -177,7 +177,7 @@ class ClassificationDataset(data.Dataset):
             dcode = list(s['diagnoses'])  * self.diag
             pcode = list(len(self.diag_vocab) * self.diag + np.asarray(s['procedures'])) * self.proc
             mcode = list(len(self.diag_vocab) * self.diag + len(self.proc_vocab) * self.proc + np.asarray(s['medications'])) * self.med
-            cptcode = list(len(self.diag_vocab) * self.diag + len(self.proc_vocab) * self.proc + len(self.cpt_vocab) * self.cpt + np.asarray(s['cptproc'])) * self.cpt
+            cptcode = list(len(self.diag_vocab) * self.diag + len(self.proc_vocab) * self.proc + np.asarray(s['cptproc'])) * self.cpt
             codes = (dcode) + (pcode) + (mcode) + (cptcode)
             x_codes[codes, i] = 1
 
@@ -188,12 +188,12 @@ class ClassificationDataset(data.Dataset):
             #x_tl[i] = v['text_len']
 
         x_cl = torch.Tensor([n,])
-        x_tl = seq[n]['text_{}_len'.format(self.text)] // 512 + int((seq[n]['text_{}_len'.format(self.text)] % 512) == 0)
-        x_tl = torch.Tensor([x_tl, ])
-        x_tt = torch.Tensor(seq[n]['text_embedding_{}'.format(self.text)])
+        # x_tl = seq[n]['text_{}_len'.format(self.text)] // 512 + int((seq[n]['text_{}_len'.format(self.text)] % 512) == 0)
+        # x_tl = torch.Tensor([x_tl, ])
+        # x_tt = torch.Tensor(seq[n]['text_embedding_{}'.format(self.text)])
 
-        if (len(x_tt.shape) != 0):
-            x_text = x_tt
+        # if (len(x_tt.shape) != 0):
+        #     x_text = x_tt
 
         if (self.y_label == 'los'):
             los = seq[n]['los']
@@ -205,7 +205,7 @@ class ClassificationDataset(data.Dataset):
         else:
             y = torch.Tensor([seq[n]['mortality']])
 
-        return (x_codes.t(), x_cl, x_text, x_tl, demo, y)
+        return (x_codes.t(), x_cl, None, None, demo, y)  # (x_codes.t(), x_cl, x_text, x_tl, demo, y)
 
     def get_label(self, idx):
         if (idx in self.train_idx):
@@ -273,18 +273,20 @@ def collate_fn(data):
     x_codes = torch.stack(x_codes, dim=1)
     demo = torch.stack(demo, dim=0)
     y_code = torch.stack(y_code, dim=1).long()
-    x_text = torch.stack(x_text, dim=1)
+    # x_text = torch.stack(x_text, dim=1)
     x_cl = torch.stack(x_cl, dim=0).long()
-    x_tl = torch.stack(x_tl, dim=0).long()
+    # x_tl = torch.stack(x_tl, dim=0).long()
     b_is = torch.arange(x_cl.shape[0]).reshape(tuple(x_cl.shape)).long()
-    return (x_codes, x_cl.squeeze(),  x_text, x_tl.squeeze(), b_is.squeeze(), demo), y_code.squeeze()
+    return (x_codes, x_cl.squeeze(),  x_text, x_tl, b_is.squeeze(), demo), y_code.squeeze()
+        #(x_codes, x_cl.squeeze(),  x_text, x_tl.squeeze(), b_is.squeeze(), demo), y_code.squeeze()
 
 def non_seq_collate_fn(data):
     x_codes, x_text, x_tl, demo, y_code = zip(*data)
     x_codes = torch.stack(x_codes, dim=0)
     demo = torch.stack(demo, dim=0)
     y_code = torch.stack(y_code, dim=1).long()
-    x_text = torch.stack(x_text, dim=0)
-    x_tl = torch.stack(x_tl, dim=0).long()
+    # x_text = torch.stack(x_text, dim=0)
+    # x_tl = torch.stack(x_tl, dim=0).long()
     b_is = torch.arange(x_tl.shape[0]).reshape(tuple(x_tl.shape)).long()
-    return (x_codes, x_text, x_tl.squeeze(), b_is, demo), y_code.squeeze()
+    return (x_codes, x_text, x_tl, b_is, demo), y_code.squeeze()
+        #(x_codes, x_text, x_tl.squeeze(), b_is, demo), y_code.squeeze()

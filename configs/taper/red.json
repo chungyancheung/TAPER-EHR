@@ -1,15 +1,15 @@
 {
-    "name": "red textcode",
+    "name": "red code",
     "n_gpu": 1,
     
     "model": {
         "type": "TextCodePre",
         "module_name": "textcodepre",
         "args": { 
-            "transformer_state_path": "./saved/t_recall_0/0106_201658/checkpoint-epoch100.pth",
-            "text_summarizer_state_path": "./saved/text_discharge_0/0106_200335/checkpoint-epoch30.pth",
+            "transformer_state_path": "saved/textcode diag proc/1110_112247/model_best.pth",
+            "text_summarizer_state_path": "saved/textcode diag proc/1110_112247/model_best.pth",
             "num_classes": 1,
-            "text": true,
+            "text": false,
             "codes": true,
             "demographics_size": 91,
 			"div_factor": 4,
@@ -19,7 +19,7 @@
     "data_loader": {
         "type": "ClassificationDataLoader",
         "args": {
-            "data_dir": "./data/textcode/biobert_pubmed/",
+            "data_dir": "~/mimic_taper",
             "balanced_data": true,
             "y_label": "readmission",
             "batch_size": 32,
@@ -29,8 +29,8 @@
             "text": "discharge",
             "num_workers": 4,
             "med": false,
-            "cptcode": false,
-            "proc": true,
+            "cptcode": true,
+            "proc": false,
             "diag": true
         }
     },
@@ -65,8 +65,8 @@
         "class_weight_0": 1.0,
         "class_weight_1": 1.0,
         "class_weight": [1.0, 1.0],
-        "epochs": 30,
-        "save_dir": "/mnt/sda1/data/experiments/saved/",
+        "epochs": 50,
+        "save_dir": "saved/",
         "save_period": 10,
         "verbosity": 2000,
         "log_step":2000,

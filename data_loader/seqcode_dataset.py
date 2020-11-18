@@ -111,7 +111,7 @@ class SeqCodeDataset(data.Dataset):
             dcode = list(s['diagnoses']) * self.diag
             pcode = list(len(self.diag_vocab) * self.diag + np.asarray(s['procedures'])) * self.proc
             mcode = list(len(self.diag_vocab) * self.diag + len(self.proc_vocab) * self.proc + np.asarray(s['medications'])) * self.med
-            cptcode = list(len(self.diag_vocab) * self.diag + len(self.proc_vocab) * self.proc + len(self.cpt_vocab) * self.cpt + np.asarray(s['cptproc'])) * self.cpt
+            cptcode = list(len(self.diag_vocab) * self.diag + len(self.proc_vocab) * self.proc + np.asarray(s['cptproc'])) * self.cpt
             demo = s['demographics']
             ss = (dcode) + (pcode) + (mcode) + (cptcode)
 

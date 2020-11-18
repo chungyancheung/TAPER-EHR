@@ -159,7 +159,10 @@ def merge_on_subject_admission_left(t1, t2):
     return t1.merge(t2, how='left', left_on=['SUBJECT_ID', 'HADM_ID'], right_on=['SUBJECT_ID', 'HADM_ID'])
 
 def add_age_to_icustays(stays):
-    stays['AGE'] = (stays.INTIME - stays.DOB).apply(lambda s: s / np.timedelta64(1, 's')) / 60./60/24/365
+    stays['AGE'] = stays.INTIME.dt.year - stays.DOB.dt.year
+    # original line causes overflow int error due to really large timedeltas that are probably
+    # from data entry errors
+    # stays['AGE'] = (stays.INTIME - stays.DOB).apply(lambda s: s / np.timedelta64(1, 's')) / 60./60/24/365
     idxs = stays.AGE < 0
     stays.loc[idxs, 'AGE'] = 90
     return stays
